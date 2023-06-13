@@ -10,6 +10,11 @@
   "keywords": [
     "maple"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mapleBetter/maple-tools"
+  },
+  "homepage": "https://github.com/mapleBetter/maple-tools",
   "author": "maple",
   "license": "ISC",
   "dependencies": {
