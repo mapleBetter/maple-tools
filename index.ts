@@ -1,6 +1,8 @@
 import echarts from 'echarts';
-
-Number.prototype.fixPrecision = () => {};
+myGlobal = '3';
+Number.prototype.toFixedPrecise = (digit: number) => {
+  return 'ddd';
+};
 
 class InitMSChart {
   option: Object;
