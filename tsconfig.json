@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
-    "outDir": "./js/",
+    "outDir": "./ts-js/",
     "target": "ES5",
     "allowUmdGlobalAccess": true,
     "module": "ES6",
     "esModuleInterop": true,
+    "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true

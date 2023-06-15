@@ -5,23 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-    <style>
-      #test {
-        width: 200px;
-        height: 100px;
-        border: 1px solid #ffd900ce;
-      }
-    </style>
+    <style></style>
   </head>
   <body>
     <div id="test"></div>
   </body>
   <!-- <script src="../dist/bundle.js"></script> -->
-  <!-- <script src="../dist/index.js"></script> -->
-  <script>
-    var chart = { on: () => {} };
-    var is = false;
-    var aa = chart.on('click', ...(is ? {} : ''), function () {});
-    console.log('aa :>> ', aa);
+  <script type="module">
+    import { formatNumberUnit } from './js/index.js';
+    console.log('formatNumberUnit :>> ', formatNumberUnit(1215566.12364, true, 1, true));
   </script>
 </html>
