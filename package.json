@@ -1,8 +1,20 @@
 {
   "name": "maple-tools",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./secondary": {
+      "import": "./dist/secondary.js",
+      "require": "./dist/secondary.cjs"
+    }
+  },
+  "author": "maple",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build ",
