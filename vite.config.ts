@@ -14,7 +14,7 @@ export default defineConfig({
         if (format === 'es') return `index.esm.js`;
         return `index.${format}.js`;
       },
-      formats: ['es', 'umd', 'iife', 'cjs']
+      formats: ['es', 'umd']
     },
     rollupOptions: {
       external: ['echarts'], // 你不想打包进库的依赖
