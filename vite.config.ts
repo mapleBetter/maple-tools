@@ -1,12 +1,13 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   build: {
-    // 库模式
     lib: {
+      // 库模式
       entry: resolve(__dirname, 'ts/index.ts'),
       name: 'mapleTools', // UMD 时使用的全局变量名
       fileName: (format) => {
@@ -14,7 +15,7 @@ export default defineConfig({
         if (format === 'es') return `index.esm.js`;
         return `index.${format}.js`;
       },
-      formats: ['es', 'umd']
+      formats: ['es', 'umd', 'iife'] // 打包格式
     },
     rollupOptions: {
       external: ['echarts'], // 你不想打包进库的依赖
