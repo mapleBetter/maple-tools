@@ -1,6 +1,6 @@
 {
   "name": "maple-tools",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "type": "module",
   "exports": {
     ".": {
@@ -13,7 +13,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build ",
-    "dev:tsc": "tsc -p tsconfig.sin.json",
     "lint": "eslint .",
     "preview": "vite preview"
   },
