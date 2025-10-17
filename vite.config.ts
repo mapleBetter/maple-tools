@@ -12,19 +12,19 @@ export default defineConfig({
       name: 'mapleTools', // UMD 时使用的全局变量名
       fileName: (format) => {
         if (format === 'umd') return `index.js`;
-        if (format === 'es') return `index.esm.js`;
+        if (format === 'es') return `index.es.js`;
         return `index.${format}.js`;
       },
-      formats: ['es', 'umd', 'iife'] // 打包格式
+      formats: ['es', 'umd', 'iife'], // 打包格式
     },
     rollupOptions: {
       external: ['echarts'], // 你不想打包进库的依赖
       output: {
         globals: {
-          echarts: 'echarts' //在 UMD 构建模式下为这些外部化的依赖,提供一个全局变量
-        }
-      }
-    }
-  }
+          echarts: 'echarts', //在 UMD 构建模式下为这些外部化的依赖,提供一个全局变量
+        },
+      },
+    },
+  },
 });
 
