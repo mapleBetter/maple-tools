@@ -1,4 +1,23 @@
-export { numToChUnit, numToSeparated, isValidDate, isNum, urlParams, numFixed, queryUrlParams } from './number';
+export { numToChUnit, numToSeparated, numFixed } from './number';
 export { MSCharts } from './chart';
-export { debounce } from './tool';
+export {
+  queryUrlParams,
+  urlParams,
+  isArray,
+  isObject,
+  isString,
+  isNumber,
+  isBoolean,
+  isNull,
+  isUndefined,
+  isFunction,
+  isDate,
+  isRegExp,
+  isMap,
+  isSet,
+  isPromise,
+  isSymbol,
+  isBigInt,
+  isNumeric,
+} from './tool';
 

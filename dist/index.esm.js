@@ -1,88 +1,129 @@
 import * as echarts from "echarts";
-var queryUrlParams = (e) => {
+const queryUrlParams = (e) => {
 	try {
-		let t = new URLSearchParams(e ? new URL(e).search : window.location.search), n = /* @__PURE__ */ new Map();
-		for (let [e, r] of t.entries()) n.set(e, r);
-		return Object.fromEntries(n);
+		let h = new URLSearchParams(e ? new URL(e).search : window.location.search), g = /* @__PURE__ */ new Map();
+		for (let [e, _] of h.entries()) g.set(e, _);
+		return Object.fromEntries(g);
 	} catch (e) {
 		return console.warn("Failed to parse URL parameters:", e), {};
 	}
-}, urlParams = queryUrlParams(), isValidDate = (e) => e instanceof Date && !Number.isNaN(e.getTime()), isNum = (e) => typeof e == "number" && !Number.isNaN(e) && Number.isFinite(e), numFixed = (e, t = 2) => {
-	let n = Number.parseInt(t.toString(), 10) || 0;
-	if (n < -20 || n > 100) throw RangeError(`Precision of ${n} fractional digits is out of range`);
-	let r = Number(e);
-	if (!isNum(r)) return "--";
-	let a = "";
-	if (r < 0 && (a = "-", r = -r), r >= 10 ** 21) return a + r.toString();
-	let o, s = Math.round(r * 10 ** n);
-	if (o = s === 0 ? "0" : s.toString(), n === 0) return a + o;
-	let c = o.length;
-	return c <= n && (o = (10 ** (n + 1 - c)).toString().substring(1) + o, c = n + 1), n > 0 && (o = `${o.substring(0, c - n)}.${o.substring(c - n)}`), a + o;
-}, numToChUnit = (e, t = !0, n = !0, r = 2) => {
-	if (!isNum(e) || e === -999999) return t ? {
+}, urlParams = queryUrlParams();
+function isArray(e) {
+	return Array.isArray(e);
+}
+function isObject(e) {
+	return typeof e == "object" && !!e && !isArray(e) && Object.prototype.toString.call(e) === "[object Object]";
+}
+function isString(e) {
+	return typeof e == "string";
+}
+function isNumber(e) {
+	return typeof e == "number" && !Number.isNaN(e) && Number.isFinite(e);
+}
+function isBoolean(e) {
+	return typeof e == "boolean";
+}
+function isNull(e) {
+	return e === null;
+}
+function isUndefined(e) {
+	return e === void 0;
+}
+function isFunction(e) {
+	return typeof e == "function";
+}
+function isDate(e) {
+	return Object.prototype.toString.call(e) === "[object Date]" && !isNaN(e.getTime());
+}
+function isRegExp(e) {
+	return Object.prototype.toString.call(e) === "[object RegExp]";
+}
+function isMap(e) {
+	return Object.prototype.toString.call(e) === "[object Map]";
+}
+function isSet(e) {
+	return Object.prototype.toString.call(e) === "[object Set]";
+}
+function isPromise(e) {
+	return typeof e == "object" && !!e && typeof e.then == "function";
+}
+function isSymbol(e) {
+	return typeof e == "symbol";
+}
+function isBigInt(e) {
+	return typeof e == "bigint";
+}
+function isNumeric(e) {
+	return typeof e == "number" ? !isNaN(e) : typeof e == "string" ? !isNaN(Number(e)) && e.trim() !== "" : !1;
+}
+var numFixed = (e, h = 2) => {
+	let g = Number.parseInt(h.toString(), 10) || 0;
+	if (g < -20 || g > 100) throw RangeError(`Precision of ${g} fractional digits is out of range`);
+	let _ = Number(e);
+	if (!isNumber(_)) return "--";
+	let v = "";
+	if (_ < 0 && (v = "-", _ = -_), _ >= 10 ** 21) return v + _.toString();
+	let y, x = Math.round(_ * 10 ** g);
+	if (y = x === 0 ? "0" : x.toString(), g === 0) return v + y;
+	let S = y.length;
+	return S <= g && (y = (10 ** (g + 1 - S)).toString().substring(1) + y, S = g + 1), g > 0 && (y = `${y.substring(0, S - g)}.${y.substring(S - g)}`), v + y;
+}, numToChUnit = (e, h = !0, g = !0, _ = 2) => {
+	if (!isNumber(e)) return h ? {
 		num: "--",
 		unit: "",
 		unitN: 1,
 		color: "text-grey"
 	} : "--";
-	let o = Math.abs(e), s = "0", c = "", l = 1;
-	return o >= 0xe8d4a51000 && (s = `${n ? numFixed(o / 0xe8d4a51000, r) : Math.floor(o / 0xe8d4a51000 * 10 ** r) / 10 ** r}`, c = "万亿", l = 0xe8d4a51000), o < 0xe8d4a51000 && o >= 1e8 && (s = `${n ? numFixed(o / 1e8, r) : Math.floor(o / 1e8 * 10 ** r) / 10 ** r}`, c = "亿", l = 1e8), o < 1e8 && o >= 1e4 && (s = `${n ? numFixed(o / 1e4, r) : Math.floor(o / 1e4 * 10 ** r) / 10 ** r}`, c = "万", l = 1e4), o < 1e4 && (s = `${n ? numFixed(o, r) : Math.floor(o * 10 ** r) / 10 ** r}`), Number.parseFloat(s) === 1e4 && c === "亿" && (s = "1", c = "万亿"), Number.parseFloat(s) === 1e4 && c === "万" && (s = "1", c = "亿"), t ? {
-		num: numFixed(Number.parseFloat(`${e < 0 ? "-" : ""}${s}`), r),
-		unit: c,
-		unitN: l,
+	let v = Math.abs(e), y = "0", x = "", S = 1;
+	return v >= 0xe8d4a51000 && (y = `${g ? numFixed(v / 0xe8d4a51000, _) : Math.floor(v / 0xe8d4a51000 * 10 ** _) / 10 ** _}`, x = "万亿", S = 0xe8d4a51000), v < 0xe8d4a51000 && v >= 1e8 && (y = `${g ? numFixed(v / 1e8, _) : Math.floor(v / 1e8 * 10 ** _) / 10 ** _}`, x = "亿", S = 1e8), v < 1e8 && v >= 1e4 && (y = `${g ? numFixed(v / 1e4, _) : Math.floor(v / 1e4 * 10 ** _) / 10 ** _}`, x = "万", S = 1e4), v < 1e4 && (y = `${g ? numFixed(v, _) : Math.floor(v * 10 ** _) / 10 ** _}`), Number.parseFloat(y) === 1e4 && x === "亿" && (y = "1", x = "万亿"), Number.parseFloat(y) === 1e4 && x === "万" && (y = "1", x = "亿"), h ? {
+		num: numFixed(Number.parseFloat(`${e < 0 ? "-" : ""}${y}`), _),
+		unit: x,
+		unitN: S,
 		color: e === 0 ? "text-grey" : e > 0 ? "text-red" : "text-green"
-	} : `${e < 0 ? "-" : ""}${s}${c}`;
+	} : `${e < 0 ? "-" : ""}${y}${x}`;
 }, numToSeparated = (e) => {
-	if (!isNum(e) || e === -999999) return "--";
-	let t = e.toString().split(".");
-	return t[0] = t[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","), t.join(".");
-}, MSCharts = (t, n) => {
-	if (!n?.el) throw Error("Invalid property: element is required");
+	if (!isNumber(e)) return "--";
+	let h = e.toString().split(".");
+	return h[0] = h[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","), h.join(".");
+}, MSCharts = (h, g) => {
+	if (!g?.el) throw Error("Invalid property: element is required");
 	if (!echarts) throw Error("Echarts is not loaded");
-	let r = {
-		el: n.el,
+	let _ = {
+		el: g.el,
 		autoUpdate: !0,
 		renderer: "canvas",
-		...n
-	}, i = echarts.init(r.el, null, { renderer: r.renderer }), a = () => {
-		if (!i) throw Error("the chartInstance does not exist");
-	}, o = () => (a(), i.getOption()), s = (e, t) => {
-		a(), i.setOption(e, t);
+		...g
+	}, v = echarts.init(_.el, null, { renderer: _.renderer }), y = () => {
+		if (!v) throw Error("the chartInstance does not exist");
+	}, b = () => (y(), v.getOption()), x = (e, h) => {
+		y(), v.setOption(e, h);
 	};
-	return r.autoUpdate && s(t), {
-		chartIns: i,
-		getOption: o,
-		setOption: s,
-		dispatch: (e, t) => {
-			a(), i.dispatchAction({
+	return _.autoUpdate && x(h), {
+		chartIns: v,
+		getOption: b,
+		setOption: x,
+		dispatch: (e, h) => {
+			y(), v.dispatchAction({
 				type: e,
-				...t
+				...h
 			});
 		},
-		getChartInfo: () => (a(), {
-			option: i.getOption(),
-			width: i.getWidth(),
-			height: i.getHeight(),
-			dom: i.getDom(),
-			imgURL: i.getDataURL()
+		getChartInfo: () => (y(), {
+			option: v.getOption(),
+			width: v.getWidth(),
+			height: v.getHeight(),
+			dom: v.getDom(),
+			imgURL: v.getDataURL()
 		}),
-		zrAction: (e, t) => {
-			a(), i.getZr().on(e, t);
+		zrAction: (e, h) => {
+			y(), v.getZr().on(e, h);
 		},
-		action: (e, t) => {
-			a(), i.on(e, t);
+		action: (e, h) => {
+			y(), v.on(e, h);
 		},
 		cancelAction: (e) => {
-			a(), i.off(e);
+			y(), v.off(e);
 		}
 	};
 };
-function debounce(e, t) {
-	let n = null;
-	return function(...r) {
-		n && clearTimeout(n), n = setTimeout(() => {
-			e(...r);
-		}, t);
-	};
-}
-export { MSCharts, debounce, isNum, isValidDate, numFixed, numToChUnit, numToSeparated, queryUrlParams, urlParams };
+export { MSCharts, isArray, isBigInt, isBoolean, isDate, isFunction, isMap, isNull, isNumber, isNumeric, isObject, isPromise, isRegExp, isSet, isString, isSymbol, isUndefined, numFixed, numToChUnit, numToSeparated, queryUrlParams, urlParams };

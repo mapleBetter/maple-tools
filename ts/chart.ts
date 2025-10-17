@@ -18,12 +18,12 @@ const MSCharts = (option: echarts.EChartsOption, property: ChartProperty) => {
   const defaultProperty: ChartProperty = {
     el: property.el,
     autoUpdate: true,
-    renderer: 'canvas'
+    renderer: 'canvas',
   };
   const finalProperty = { ...defaultProperty, ...property };
 
   const chartIns = echarts.init(finalProperty.el, null, {
-    renderer: finalProperty.renderer
+    renderer: finalProperty.renderer,
   });
 
   const isChartExist = () => {
@@ -66,7 +66,7 @@ const MSCharts = (option: echarts.EChartsOption, property: ChartProperty) => {
       width: chartIns.getWidth(),
       height: chartIns.getHeight(),
       dom: chartIns.getDom(),
-      imgURL: chartIns.getDataURL()
+      imgURL: chartIns.getDataURL(),
     };
   };
 
@@ -80,7 +80,7 @@ const MSCharts = (option: echarts.EChartsOption, property: ChartProperty) => {
     getChartInfo,
     zrAction,
     action,
-    cancelAction
+    cancelAction,
   };
 };
 
