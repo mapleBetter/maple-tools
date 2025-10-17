@@ -1,5 +1,5 @@
 (function(global, factory) {
-	typeof exports === "object" && typeof module !== "undefined" ? factory(exports, require("echarts")) : typeof define === "function" && define.amd ? define(["exports", "echarts"], factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, factory(global.mapleTools = {}, global.echarts));
+	typeof exports === "object" && typeof module !== "undefined" ? factory(exports, require("echarts")) : typeof define === "function" && define.amd ? define(["exports", "echarts"], factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, factory(global.MPTools = {}, global.echarts));
 })(this, function(exports, echarts) {
 	var __create = Object.create;
 	var __defProp = Object.defineProperty;
