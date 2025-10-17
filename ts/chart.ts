@@ -1,4 +1,5 @@
 import * as echarts from 'echarts';
+
 interface AnyParams {
   [key: string]: unknown;
 }
@@ -7,7 +8,7 @@ type ChartProperty = {
   autoUpdate?: boolean;
   renderer?: 'canvas' | 'svg';
 };
-const MSCharts = (option: echarts.EChartsOption, property: ChartProperty) => {
+export const MSCharts = (option: echarts.EChartsOption, property: ChartProperty) => {
   if (!property?.el) {
     throw new Error('Invalid property: element is required');
   }
@@ -83,6 +84,3 @@ const MSCharts = (option: echarts.EChartsOption, property: ChartProperty) => {
     cancelAction,
   };
 };
-
-export { MSCharts };
-

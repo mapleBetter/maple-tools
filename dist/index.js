@@ -85,7 +85,8 @@ var numFixed = (e, h = 2) => {
 	if (!isNumber(e)) return "--";
 	let h = e.toString().split(".");
 	return h[0] = h[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","), h.join(".");
-}, MSCharts = (h, g) => {
+};
+const MSCharts = (h, g) => {
 	if (!g?.el) throw Error("Invalid property: element is required");
 	if (!echarts) throw Error("Echarts is not loaded");
 	let _ = {
