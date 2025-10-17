@@ -8,10 +8,11 @@ export default defineConfig({
   plugins: [react(), dts()],
   build: {
     minify: false, // 关闭代码压缩
+    target: 'es2015',
     lib: {
       // 库模式
       entry: resolve(__dirname, 'ts/index.ts'),
-      name: 'mapleTools', // UMD 时使用的全局变量名
+      name: 'MPTools', // UMD 时使用的全局变量名
       fileName: (format) => {
         if (format === 'umd') return `index.umd.js`;
         if (format === 'es') return `index.js`;

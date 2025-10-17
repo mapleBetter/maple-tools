@@ -1,7 +1,7 @@
 export { numToChUnit, numToSeparated, numFixed } from './number';
-export { MSCharts } from './chart';
 export {
   queryUrlParams,
+  MSCharts,
   urlParams,
   isArray,
   isObject,

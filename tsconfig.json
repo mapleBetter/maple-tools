@@ -1,5 +1,15 @@
 {
-  "files": [],
-  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
+  "compilerOptions": {
+    "target": "es2015", // 编译后的 JS 代码使用 es2015 语法特性
+    "strict": true, // 启用所有严格类型检查，提高类型安全
+    "module": "es2015", // 使用 es2015 模块系统，适合现代打包工具
+    "moduleResolution": "node", // 按 Node.js 方式解析模块，支持第三方包
+    "esModuleInterop": true, // 允许 CommonJS 模块默认导入，兼容 import/export
+    "skipLibCheck": true, // 跳过对依赖库的类型检查，提升编译速度
+    "resolveJsonModule": true, // 允许 import JSON 文件为模块
+    "isolatedModules": false, // 是否每个文件单独编译，false 表示整体编译（适合库）
+    "noEmit": true // 是否禁止输出文件，false 表示允许输出
+  },
+  "include": ["ts"] // 只包含 ts 目录，不包含其他目录
 }
 

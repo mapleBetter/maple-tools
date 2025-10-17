@@ -1,6 +1,31 @@
+import * as echarts from 'echarts';
 type QueryParams = Record<string, string>;
 export declare const queryUrlParams: (url?: string) => QueryParams;
 export declare const urlParams: QueryParams;
+interface AnyParams {
+    [key: string]: unknown;
+}
+type ChartProperty = {
+    el: HTMLElement;
+    autoUpdate?: boolean;
+    renderer?: 'canvas' | 'svg';
+};
+export declare const MSCharts: (option: echarts.EChartsOption, property: ChartProperty) => {
+    chartIns: echarts.ECharts;
+    getOption: () => echarts.EChartsCoreOption;
+    setOption: (newOption: echarts.EChartsOption, opts?: echarts.SetOptionOpts) => void;
+    dispatch: (typeName: string, opts: AnyParams) => void;
+    getChartInfo: () => {
+        option: echarts.EChartsCoreOption;
+        width: number;
+        height: number;
+        dom: HTMLElement;
+        imgURL: string;
+    };
+    zrAction: (actionName: string, call: (params: unknown) => void) => void;
+    action: (actionName: string, handler: (params: unknown) => void) => void;
+    cancelAction: (actionName: string) => void;
+};
 /**
  * 判断是否为数组
  */

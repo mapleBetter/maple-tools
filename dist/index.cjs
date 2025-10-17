@@ -32,6 +32,68 @@ const queryUrlParams = (url) => {
 	}
 };
 const urlParams = queryUrlParams();
+const MSCharts = (option, property) => {
+	if (!property?.el) throw new Error("Invalid property: element is required");
+	if (!echarts) throw new Error("Echarts is not loaded");
+	const finalProperty = {
+		el: property.el,
+		autoUpdate: true,
+		renderer: "canvas",
+		...property
+	};
+	const chartIns = echarts.init(finalProperty.el, null, { renderer: finalProperty.renderer });
+	const isChartExist = () => {
+		if (!chartIns) throw new Error("the chartInstance does not exist");
+	};
+	const getOption = () => {
+		isChartExist();
+		return chartIns.getOption();
+	};
+	const setOption = (newOption, opts) => {
+		isChartExist();
+		chartIns.setOption(newOption, opts);
+	};
+	const dispatch = (typeName, opts) => {
+		isChartExist();
+		chartIns.dispatchAction({
+			type: typeName,
+			...opts
+		});
+	};
+	const zrAction = (actionName, call) => {
+		isChartExist();
+		chartIns.getZr().on(actionName, call);
+	};
+	const action = (actionName, handler) => {
+		isChartExist();
+		chartIns.on(actionName, handler);
+	};
+	const cancelAction = (actionName) => {
+		isChartExist();
+		chartIns.off(actionName);
+	};
+	const getChartInfo = () => {
+		isChartExist();
+		return {
+			option: chartIns.getOption(),
+			width: chartIns.getWidth(),
+			height: chartIns.getHeight(),
+			dom: chartIns.getDom(),
+			imgURL: chartIns.getDataURL()
+		};
+	};
+	if (finalProperty.autoUpdate) setOption(option);
+	return {
+		chartIns,
+		getOption,
+		setOption,
+		dispatch,
+		getChartInfo,
+		zrAction,
+		action,
+		cancelAction
+	};
+};
 function isArray(value) {
 	return Array.isArray(value);
 }
@@ -152,68 +214,6 @@ var numToSeparated = (num) => {
 	const numberParts = num.toString().split(".");
 	numberParts[0] = numberParts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	return numberParts.join(".");
-};
-const MSCharts = (option, property) => {
-	if (!property?.el) throw new Error("Invalid property: element is required");
-	if (!echarts) throw new Error("Echarts is not loaded");
-	const finalProperty = {
-		el: property.el,
-		autoUpdate: true,
-		renderer: "canvas",
-		...property
-	};
-	const chartIns = echarts.init(finalProperty.el, null, { renderer: finalProperty.renderer });
-	const isChartExist = () => {
-		if (!chartIns) throw new Error("the chartInstance does not exist");
-	};
-	const getOption = () => {
-		isChartExist();
-		return chartIns.getOption();
-	};
-	const setOption = (newOption, opts) => {
-		isChartExist();
-		chartIns.setOption(newOption, opts);
-	};
-	const dispatch = (typeName, opts) => {
-		isChartExist();
-		chartIns.dispatchAction({
-			type: typeName,
-			...opts
-		});
-	};
-	const zrAction = (actionName, call) => {
-		isChartExist();
-		chartIns.getZr().on(actionName, call);
-	};
-	const action = (actionName, handler) => {
-		isChartExist();
-		chartIns.on(actionName, handler);
-	};
-	const cancelAction = (actionName) => {
-		isChartExist();
-		chartIns.off(actionName);
-	};
-	const getChartInfo = () => {
-		isChartExist();
-		return {
-			option: chartIns.getOption(),
-			width: chartIns.getWidth(),
-			height: chartIns.getHeight(),
-			dom: chartIns.getDom(),
-			imgURL: chartIns.getDataURL()
-		};
-	};
-	if (finalProperty.autoUpdate) setOption(option);
-	return {
-		chartIns,
-		getOption,
-		setOption,
-		dispatch,
-		getChartInfo,
-		zrAction,
-		action,
-		cancelAction
-	};
 };
 exports.MSCharts = MSCharts;
 exports.isArray = isArray;
