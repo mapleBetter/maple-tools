@@ -1,1 +1,242 @@
-(function(e,t){typeof exports==`object`&&typeof module<`u`?t(exports,require(`echarts`)):typeof define==`function`&&define.amd?define([`exports`,`echarts`],t):(e=typeof globalThis<`u`?globalThis:e||self,t(e.mapleTools={},e.echarts))})(this,function(e,t){var n=Object.create,r=Object.defineProperty,i=Object.getOwnPropertyDescriptor,a=Object.getOwnPropertyNames,o=Object.getPrototypeOf,s=Object.prototype.hasOwnProperty,c=(e,t,n,o)=>{if(t&&typeof t==`object`||typeof t==`function`)for(var c=a(t),l=0,u=c.length,d;l<u;l++)d=c[l],!s.call(e,d)&&d!==n&&r(e,d,{get:(e=>t[e]).bind(null,d),enumerable:!(o=i(t,d))||o.enumerable});return e};t=((e,t,i)=>(i=e==null?{}:n(o(e)),c(t||!e||!e.__esModule?r(i,`default`,{value:e,enumerable:!0}):i,e)))(t);let l=e=>{try{let t=new URLSearchParams(e?new URL(e).search:window.location.search),n=new Map;for(let[e,r]of t.entries())n.set(e,r);return Object.fromEntries(n)}catch(e){return console.warn(`Failed to parse URL parameters:`,e),{}}},u=l();function d(e){return Array.isArray(e)}function f(e){return typeof e==`object`&&!!e&&!d(e)&&Object.prototype.toString.call(e)===`[object Object]`}function p(e){return typeof e==`string`}function m(e){return typeof e==`number`&&!Number.isNaN(e)&&Number.isFinite(e)}function h(e){return typeof e==`boolean`}function g(e){return e===null}function _(e){return e===void 0}function v(e){return typeof e==`function`}function y(e){return Object.prototype.toString.call(e)===`[object Date]`&&!isNaN(e.getTime())}function b(e){return Object.prototype.toString.call(e)===`[object RegExp]`}function x(e){return Object.prototype.toString.call(e)===`[object Map]`}function S(e){return Object.prototype.toString.call(e)===`[object Set]`}function C(e){return typeof e==`object`&&!!e&&typeof e.then==`function`}function w(e){return typeof e==`symbol`}function T(e){return typeof e==`bigint`}function E(e){return typeof e==`number`?!isNaN(e):typeof e==`string`?!isNaN(Number(e))&&e.trim()!==``:!1}var D=(e,t=2)=>{let n=Number.parseInt(t.toString(),10)||0;if(n<-20||n>100)throw RangeError(`Precision of ${n} fractional digits is out of range`);let r=Number(e);if(!m(r))return`--`;let i=``;if(r<0&&(i=`-`,r=-r),r>=10**21)return i+r.toString();let a,o=Math.round(r*10**n);if(a=o===0?`0`:o.toString(),n===0)return i+a;let s=a.length;return s<=n&&(a=(10**(n+1-s)).toString().substring(1)+a,s=n+1),n>0&&(a=`${a.substring(0,s-n)}.${a.substring(s-n)}`),i+a};e.MSCharts=(e,n)=>{if(!n?.el)throw Error(`Invalid property: element is required`);if(!t)throw Error(`Echarts is not loaded`);let r={el:n.el,autoUpdate:!0,renderer:`canvas`,...n},i=t.init(r.el,null,{renderer:r.renderer}),a=()=>{if(!i)throw Error(`the chartInstance does not exist`)},o=()=>(a(),i.getOption()),s=(e,t)=>{a(),i.setOption(e,t)};return r.autoUpdate&&s(e),{chartIns:i,getOption:o,setOption:s,dispatch:(e,t)=>{a(),i.dispatchAction({type:e,...t})},getChartInfo:()=>(a(),{option:i.getOption(),width:i.getWidth(),height:i.getHeight(),dom:i.getDom(),imgURL:i.getDataURL()}),zrAction:(e,t)=>{a(),i.getZr().on(e,t)},action:(e,t)=>{a(),i.on(e,t)},cancelAction:e=>{a(),i.off(e)}}},e.isArray=d,e.isBigInt=T,e.isBoolean=h,e.isDate=y,e.isFunction=v,e.isMap=x,e.isNull=g,e.isNumber=m,e.isNumeric=E,e.isObject=f,e.isPromise=C,e.isRegExp=b,e.isSet=S,e.isString=p,e.isSymbol=w,e.isUndefined=_,e.numFixed=D,e.numToChUnit=(e,t=!0,n=!0,r=2)=>{if(!m(e))return t?{num:`--`,unit:``,unitN:1,color:`text-grey`}:`--`;let i=Math.abs(e),a=`0`,o=``,s=1;return i>=0xe8d4a51000&&(a=`${n?D(i/0xe8d4a51000,r):Math.floor(i/0xe8d4a51000*10**r)/10**r}`,o=`万亿`,s=0xe8d4a51000),i<0xe8d4a51000&&i>=1e8&&(a=`${n?D(i/1e8,r):Math.floor(i/1e8*10**r)/10**r}`,o=`亿`,s=1e8),i<1e8&&i>=1e4&&(a=`${n?D(i/1e4,r):Math.floor(i/1e4*10**r)/10**r}`,o=`万`,s=1e4),i<1e4&&(a=`${n?D(i,r):Math.floor(i*10**r)/10**r}`),Number.parseFloat(a)===1e4&&o===`亿`&&(a=`1`,o=`万亿`),Number.parseFloat(a)===1e4&&o===`万`&&(a=`1`,o=`亿`),t?{num:D(Number.parseFloat(`${e<0?`-`:``}${a}`),r),unit:o,unitN:s,color:e===0?`text-grey`:e>0?`text-red`:`text-green`}:`${e<0?`-`:``}${a}${o}`},e.numToSeparated=e=>{if(!m(e))return`--`;let t=e.toString().split(`.`);return t[0]=t[0].replace(/\B(?=(\d{3})+(?!\d))/g,`,`),t.join(`.`)},e.queryUrlParams=l,e.urlParams=u});
+(function(global, factory) {
+	typeof exports === "object" && typeof module !== "undefined" ? factory(exports, require("echarts")) : typeof define === "function" && define.amd ? define(["exports", "echarts"], factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, factory(global.mapleTools = {}, global.echarts));
+})(this, function(exports, echarts) {
+	var __create = Object.create;
+	var __defProp = Object.defineProperty;
+	var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+	var __getOwnPropNames = Object.getOwnPropertyNames;
+	var __getProtoOf = Object.getPrototypeOf;
+	var __hasOwnProp = Object.prototype.hasOwnProperty;
+	var __copyProps = (to, from, except, desc) => {
+		if (from && typeof from === "object" || typeof from === "function") for (var keys = __getOwnPropNames(from), i = 0, n = keys.length, key; i < n; i++) {
+			key = keys[i];
+			if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+				get: ((k) => from[k]).bind(null, key),
+				enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+			});
+		}
+		return to;
+	};
+	var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
+		value: mod,
+		enumerable: true
+	}) : target, mod));
+	echarts = __toESM(echarts);
+	const queryUrlParams = (url) => {
+		try {
+			const params = new URLSearchParams(url ? new URL(url).search : window.location.search);
+			const result = /* @__PURE__ */ new Map();
+			for (const [key, value] of params.entries()) result.set(key, value);
+			return Object.fromEntries(result);
+		} catch (error) {
+			console.warn("Failed to parse URL parameters:", error);
+			return {};
+		}
+	};
+	const urlParams = queryUrlParams();
+	function isArray(value) {
+		return Array.isArray(value);
+	}
+	function isObject(value) {
+		return value !== null && typeof value === "object" && !isArray(value) && Object.prototype.toString.call(value) === "[object Object]";
+	}
+	function isString(value) {
+		return typeof value === "string";
+	}
+	function isNumber(val) {
+		return typeof val === "number" && !Number.isNaN(val) && Number.isFinite(val);
+	}
+	function isBoolean(value) {
+		return typeof value === "boolean";
+	}
+	function isNull(value) {
+		return value === null;
+	}
+	function isUndefined(value) {
+		return value === void 0;
+	}
+	function isFunction(value) {
+		return typeof value === "function";
+	}
+	function isDate(value) {
+		return Object.prototype.toString.call(value) === "[object Date]" && !isNaN(value.getTime());
+	}
+	function isRegExp(value) {
+		return Object.prototype.toString.call(value) === "[object RegExp]";
+	}
+	function isMap(value) {
+		return Object.prototype.toString.call(value) === "[object Map]";
+	}
+	function isSet(value) {
+		return Object.prototype.toString.call(value) === "[object Set]";
+	}
+	function isPromise(value) {
+		return typeof value === "object" && value !== null && typeof value.then === "function";
+	}
+	function isSymbol(value) {
+		return typeof value === "symbol";
+	}
+	function isBigInt(value) {
+		return typeof value === "bigint";
+	}
+	function isNumeric(value) {
+		if (typeof value === "number") return !isNaN(value);
+		if (typeof value === "string") return !isNaN(Number(value)) && value.trim() !== "";
+		return false;
+	}
+	var numFixed = (number, fractionDigits = 2) => {
+		const f = Number.parseInt(fractionDigits.toString(), 10) || 0;
+		if (f < -20 || f > 100) throw new RangeError(`Precision of ${f} fractional digits is out of range`);
+		let x = Number(number);
+		if (!isNumber(x)) return "--";
+		let s = "";
+		if (x < 0) {
+			s = "-";
+			x = -x;
+		}
+		if (x >= 10 ** 21) return s + x.toString();
+		let m;
+		const n = Math.round(x * 10 ** f);
+		m = n === 0 ? "0" : n.toString();
+		if (f === 0) return s + m;
+		let k = m.length;
+		if (k <= f) {
+			m = (10 ** (f + 1 - k)).toString().substring(1) + m;
+			k = f + 1;
+		}
+		if (f > 0) m = `${m.substring(0, k - f)}.${m.substring(k - f)}`;
+		return s + m;
+	};
+	var numToChUnit = (_num, isFull = true, isToFix = true, digits = 2) => {
+		if (!isNumber(_num)) return isFull ? {
+			num: "--",
+			unit: "",
+			unitN: 1,
+			color: "text-grey"
+		} : "--";
+		const absNum = Math.abs(_num);
+		let newNum = "0";
+		let unit = "";
+		let unitN = 1;
+		if (absNum >= 0xe8d4a51000) {
+			newNum = `${isToFix ? numFixed(absNum / 0xe8d4a51000, digits) : Math.floor(absNum / 0xe8d4a51000 * 10 ** digits) / 10 ** digits}`;
+			unit = "万亿";
+			unitN = 0xe8d4a51000;
+		}
+		if (absNum < 0xe8d4a51000 && absNum >= 1e8) {
+			newNum = `${isToFix ? numFixed(absNum / 1e8, digits) : Math.floor(absNum / 1e8 * 10 ** digits) / 10 ** digits}`;
+			unit = "亿";
+			unitN = 1e8;
+		}
+		if (absNum < 1e8 && absNum >= 1e4) {
+			newNum = `${isToFix ? numFixed(absNum / 1e4, digits) : Math.floor(absNum / 1e4 * 10 ** digits) / 10 ** digits}`;
+			unit = "万";
+			unitN = 1e4;
+		}
+		if (absNum < 1e4) newNum = `${isToFix ? numFixed(absNum, digits) : Math.floor(absNum * 10 ** digits) / 10 ** digits}`;
+		if (Number.parseFloat(newNum) === 1e4 && unit === "亿") {
+			newNum = "1";
+			unit = "万亿";
+		}
+		if (Number.parseFloat(newNum) === 1e4 && unit === "万") {
+			newNum = "1";
+			unit = "亿";
+		}
+		return isFull ? {
+			num: numFixed(Number.parseFloat(`${_num < 0 ? "-" : ""}${newNum}`), digits),
+			unit,
+			unitN,
+			color: _num === 0 ? "text-grey" : _num > 0 ? "text-red" : "text-green"
+		} : `${_num < 0 ? "-" : ""}${newNum}${unit}`;
+	};
+	var numToSeparated = (num) => {
+		if (!isNumber(num)) return "--";
+		const numberParts = num.toString().split(".");
+		numberParts[0] = numberParts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		return numberParts.join(".");
+	};
+	const MSCharts = (option, property) => {
+		if (!property?.el) throw new Error("Invalid property: element is required");
+		if (!echarts) throw new Error("Echarts is not loaded");
+		const finalProperty = {
+			el: property.el,
+			autoUpdate: true,
+			renderer: "canvas",
+			...property
+		};
+		const chartIns = echarts.init(finalProperty.el, null, { renderer: finalProperty.renderer });
+		const isChartExist = () => {
+			if (!chartIns) throw new Error("the chartInstance does not exist");
+		};
+		const getOption = () => {
+			isChartExist();
+			return chartIns.getOption();
+		};
+		const setOption = (newOption, opts) => {
+			isChartExist();
+			chartIns.setOption(newOption, opts);
+		};
+		const dispatch = (typeName, opts) => {
+			isChartExist();
+			chartIns.dispatchAction({
+				type: typeName,
+				...opts
+			});
+		};
+		const zrAction = (actionName, call) => {
+			isChartExist();
+			chartIns.getZr().on(actionName, call);
+		};
+		const action = (actionName, handler) => {
+			isChartExist();
+			chartIns.on(actionName, handler);
+		};
+		const cancelAction = (actionName) => {
+			isChartExist();
+			chartIns.off(actionName);
+		};
+		const getChartInfo = () => {
+			isChartExist();
+			return {
+				option: chartIns.getOption(),
+				width: chartIns.getWidth(),
+				height: chartIns.getHeight(),
+				dom: chartIns.getDom(),
+				imgURL: chartIns.getDataURL()
+			};
+		};
+		if (finalProperty.autoUpdate) setOption(option);
+		return {
+			chartIns,
+			getOption,
+			setOption,
+			dispatch,
+			getChartInfo,
+			zrAction,
+			action,
+			cancelAction
+		};
+	};
+	exports.MSCharts = MSCharts;
+	exports.isArray = isArray;
+	exports.isBigInt = isBigInt;
+	exports.isBoolean = isBoolean;
+	exports.isDate = isDate;
+	exports.isFunction = isFunction;
+	exports.isMap = isMap;
+	exports.isNull = isNull;
+	exports.isNumber = isNumber;
+	exports.isNumeric = isNumeric;
+	exports.isObject = isObject;
+	exports.isPromise = isPromise;
+	exports.isRegExp = isRegExp;
+	exports.isSet = isSet;
+	exports.isString = isString;
+	exports.isSymbol = isSymbol;
+	exports.isUndefined = isUndefined;
+	exports.numFixed = numFixed;
+	exports.numToChUnit = numToChUnit;
+	exports.numToSeparated = numToSeparated;
+	exports.queryUrlParams = queryUrlParams;
+	exports.urlParams = urlParams;
+});
