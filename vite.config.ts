@@ -6,7 +6,7 @@ import { resolve } from 'path';
 export default defineConfig({
   plugins: [react()],
   build: {
-    minify: false, // 关闭代码压缩
+    // minify: false, // 关闭代码压缩
     lib: {
       // 库模式
       entry: resolve(__dirname, 'ts/index.ts'),

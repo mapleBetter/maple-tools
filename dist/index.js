@@ -1,197 +1,129 @@
 import * as echarts from "echarts";
-const queryUrlParams = (url) => {
+const queryUrlParams = (e) => {
 	try {
-		const params = new URLSearchParams(url ? new URL(url).search : window.location.search);
-		const result = /* @__PURE__ */ new Map();
-		for (const [key, value] of params.entries()) result.set(key, value);
-		return Object.fromEntries(result);
-	} catch (error) {
-		console.warn("Failed to parse URL parameters:", error);
-		return {};
+		let h = new URLSearchParams(e ? new URL(e).search : window.location.search), g = /* @__PURE__ */ new Map();
+		for (let [e, _] of h.entries()) g.set(e, _);
+		return Object.fromEntries(g);
+	} catch (e) {
+		return console.warn("Failed to parse URL parameters:", e), {};
 	}
-};
-const urlParams = queryUrlParams();
-function isArray(value) {
-	return Array.isArray(value);
+}, urlParams = queryUrlParams();
+function isArray(e) {
+	return Array.isArray(e);
 }
-function isObject(value) {
-	return value !== null && typeof value === "object" && !isArray(value) && Object.prototype.toString.call(value) === "[object Object]";
+function isObject(e) {
+	return typeof e == "object" && !!e && !isArray(e) && Object.prototype.toString.call(e) === "[object Object]";
 }
-function isString(value) {
-	return typeof value === "string";
+function isString(e) {
+	return typeof e == "string";
 }
-function isNumber(val) {
-	return typeof val === "number" && !Number.isNaN(val) && Number.isFinite(val);
+function isNumber(e) {
+	return typeof e == "number" && !Number.isNaN(e) && Number.isFinite(e);
 }
-function isBoolean(value) {
-	return typeof value === "boolean";
+function isBoolean(e) {
+	return typeof e == "boolean";
 }
-function isNull(value) {
-	return value === null;
+function isNull(e) {
+	return e === null;
 }
-function isUndefined(value) {
-	return value === void 0;
+function isUndefined(e) {
+	return e === void 0;
 }
-function isFunction(value) {
-	return typeof value === "function";
+function isFunction(e) {
+	return typeof e == "function";
 }
-function isDate(value) {
-	return Object.prototype.toString.call(value) === "[object Date]" && !isNaN(value.getTime());
+function isDate(e) {
+	return Object.prototype.toString.call(e) === "[object Date]" && !isNaN(e.getTime());
 }
-function isRegExp(value) {
-	return Object.prototype.toString.call(value) === "[object RegExp]";
+function isRegExp(e) {
+	return Object.prototype.toString.call(e) === "[object RegExp]";
 }
-function isMap(value) {
-	return Object.prototype.toString.call(value) === "[object Map]";
+function isMap(e) {
+	return Object.prototype.toString.call(e) === "[object Map]";
 }
-function isSet(value) {
-	return Object.prototype.toString.call(value) === "[object Set]";
+function isSet(e) {
+	return Object.prototype.toString.call(e) === "[object Set]";
 }
-function isPromise(value) {
-	return typeof value === "object" && value !== null && typeof value.then === "function";
+function isPromise(e) {
+	return typeof e == "object" && !!e && typeof e.then == "function";
 }
-function isSymbol(value) {
-	return typeof value === "symbol";
+function isSymbol(e) {
+	return typeof e == "symbol";
 }
-function isBigInt(value) {
-	return typeof value === "bigint";
+function isBigInt(e) {
+	return typeof e == "bigint";
 }
-function isNumeric(value) {
-	if (typeof value === "number") return !isNaN(value);
-	if (typeof value === "string") return !isNaN(Number(value)) && value.trim() !== "";
-	return false;
+function isNumeric(e) {
+	return typeof e == "number" ? !isNaN(e) : typeof e == "string" ? !isNaN(Number(e)) && e.trim() !== "" : !1;
 }
-var numFixed = (number, fractionDigits = 2) => {
-	const f = Number.parseInt(fractionDigits.toString(), 10) || 0;
-	if (f < -20 || f > 100) throw new RangeError(`Precision of ${f} fractional digits is out of range`);
-	let x = Number(number);
-	if (!isNumber(x)) return "--";
-	let s = "";
-	if (x < 0) {
-		s = "-";
-		x = -x;
-	}
-	if (x >= 10 ** 21) return s + x.toString();
-	let m;
-	const n = Math.round(x * 10 ** f);
-	m = n === 0 ? "0" : n.toString();
-	if (f === 0) return s + m;
-	let k = m.length;
-	if (k <= f) {
-		m = (10 ** (f + 1 - k)).toString().substring(1) + m;
-		k = f + 1;
-	}
-	if (f > 0) m = `${m.substring(0, k - f)}.${m.substring(k - f)}`;
-	return s + m;
-};
-var numToChUnit = (_num, isFull = true, isToFix = true, digits = 2) => {
-	if (!isNumber(_num)) return isFull ? {
+var numFixed = (e, h = 2) => {
+	let g = Number.parseInt(h.toString(), 10) || 0;
+	if (g < -20 || g > 100) throw RangeError(`Precision of ${g} fractional digits is out of range`);
+	let _ = Number(e);
+	if (!isNumber(_)) return "--";
+	let v = "";
+	if (_ < 0 && (v = "-", _ = -_), _ >= 10 ** 21) return v + _.toString();
+	let y, x = Math.round(_ * 10 ** g);
+	if (y = x === 0 ? "0" : x.toString(), g === 0) return v + y;
+	let S = y.length;
+	return S <= g && (y = (10 ** (g + 1 - S)).toString().substring(1) + y, S = g + 1), g > 0 && (y = `${y.substring(0, S - g)}.${y.substring(S - g)}`), v + y;
+}, numToChUnit = (e, h = !0, g = !0, _ = 2) => {
+	if (!isNumber(e)) return h ? {
 		num: "--",
 		unit: "",
 		unitN: 1,
 		color: "text-grey"
 	} : "--";
-	const absNum = Math.abs(_num);
-	let newNum = "0";
-	let unit = "";
-	let unitN = 1;
-	if (absNum >= 0xe8d4a51000) {
-		newNum = `${isToFix ? numFixed(absNum / 0xe8d4a51000, digits) : Math.floor(absNum / 0xe8d4a51000 * 10 ** digits) / 10 ** digits}`;
-		unit = "万亿";
-		unitN = 0xe8d4a51000;
-	}
-	if (absNum < 0xe8d4a51000 && absNum >= 1e8) {
-		newNum = `${isToFix ? numFixed(absNum / 1e8, digits) : Math.floor(absNum / 1e8 * 10 ** digits) / 10 ** digits}`;
-		unit = "亿";
-		unitN = 1e8;
-	}
-	if (absNum < 1e8 && absNum >= 1e4) {
-		newNum = `${isToFix ? numFixed(absNum / 1e4, digits) : Math.floor(absNum / 1e4 * 10 ** digits) / 10 ** digits}`;
-		unit = "万";
-		unitN = 1e4;
-	}
-	if (absNum < 1e4) newNum = `${isToFix ? numFixed(absNum, digits) : Math.floor(absNum * 10 ** digits) / 10 ** digits}`;
-	if (Number.parseFloat(newNum) === 1e4 && unit === "亿") {
-		newNum = "1";
-		unit = "万亿";
-	}
-	if (Number.parseFloat(newNum) === 1e4 && unit === "万") {
-		newNum = "1";
-		unit = "亿";
-	}
-	return isFull ? {
-		num: numFixed(Number.parseFloat(`${_num < 0 ? "-" : ""}${newNum}`), digits),
-		unit,
-		unitN,
-		color: _num === 0 ? "text-grey" : _num > 0 ? "text-red" : "text-green"
-	} : `${_num < 0 ? "-" : ""}${newNum}${unit}`;
-};
-var numToSeparated = (num) => {
-	if (!isNumber(num)) return "--";
-	const numberParts = num.toString().split(".");
-	numberParts[0] = numberParts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	return numberParts.join(".");
-};
-var MSCharts = (option, property) => {
-	if (!property?.el) throw new Error("Invalid property: element is required");
-	if (!echarts) throw new Error("Echarts is not loaded");
-	const finalProperty = {
-		el: property.el,
-		autoUpdate: true,
+	let v = Math.abs(e), y = "0", x = "", S = 1;
+	return v >= 0xe8d4a51000 && (y = `${g ? numFixed(v / 0xe8d4a51000, _) : Math.floor(v / 0xe8d4a51000 * 10 ** _) / 10 ** _}`, x = "万亿", S = 0xe8d4a51000), v < 0xe8d4a51000 && v >= 1e8 && (y = `${g ? numFixed(v / 1e8, _) : Math.floor(v / 1e8 * 10 ** _) / 10 ** _}`, x = "亿", S = 1e8), v < 1e8 && v >= 1e4 && (y = `${g ? numFixed(v / 1e4, _) : Math.floor(v / 1e4 * 10 ** _) / 10 ** _}`, x = "万", S = 1e4), v < 1e4 && (y = `${g ? numFixed(v, _) : Math.floor(v * 10 ** _) / 10 ** _}`), Number.parseFloat(y) === 1e4 && x === "亿" && (y = "1", x = "万亿"), Number.parseFloat(y) === 1e4 && x === "万" && (y = "1", x = "亿"), h ? {
+		num: numFixed(Number.parseFloat(`${e < 0 ? "-" : ""}${y}`), _),
+		unit: x,
+		unitN: S,
+		color: e === 0 ? "text-grey" : e > 0 ? "text-red" : "text-green"
+	} : `${e < 0 ? "-" : ""}${y}${x}`;
+}, numToSeparated = (e) => {
+	if (!isNumber(e)) return "--";
+	let h = e.toString().split(".");
+	return h[0] = h[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","), h.join(".");
+}, MSCharts = (h, g) => {
+	if (!g?.el) throw Error("Invalid property: element is required");
+	if (!echarts) throw Error("Echarts is not loaded");
+	let _ = {
+		el: g.el,
+		autoUpdate: !0,
 		renderer: "canvas",
-		...property
+		...g
+	}, v = echarts.init(_.el, null, { renderer: _.renderer }), y = () => {
+		if (!v) throw Error("the chartInstance does not exist");
+	}, b = () => (y(), v.getOption()), x = (e, h) => {
+		y(), v.setOption(e, h);
 	};
-	const chartIns = echarts.init(finalProperty.el, null, { renderer: finalProperty.renderer });
-	const isChartExist = () => {
-		if (!chartIns) throw new Error("the chartInstance does not exist");
-	};
-	const getOption = () => {
-		isChartExist();
-		return chartIns.getOption();
-	};
-	const setOption = (newOption, opts) => {
-		isChartExist();
-		chartIns.setOption(newOption, opts);
-	};
-	const dispatch = (typeName, opts) => {
-		isChartExist();
-		chartIns.dispatchAction({
-			type: typeName,
-			...opts
-		});
-	};
-	const zrAction = (actionName, call) => {
-		isChartExist();
-		chartIns.getZr().on(actionName, call);
-	};
-	const action = (actionName, handler) => {
-		isChartExist();
-		chartIns.on(actionName, handler);
-	};
-	const cancelAction = (actionName) => {
-		isChartExist();
-		chartIns.off(actionName);
-	};
-	const getChartInfo = () => {
-		isChartExist();
-		return {
-			option: chartIns.getOption(),
-			width: chartIns.getWidth(),
-			height: chartIns.getHeight(),
-			dom: chartIns.getDom(),
-			imgURL: chartIns.getDataURL()
-		};
-	};
-	if (finalProperty.autoUpdate) setOption(option);
-	return {
-		chartIns,
-		getOption,
-		setOption,
-		dispatch,
-		getChartInfo,
-		zrAction,
-		action,
-		cancelAction
+	return _.autoUpdate && x(h), {
+		chartIns: v,
+		getOption: b,
+		setOption: x,
+		dispatch: (e, h) => {
+			y(), v.dispatchAction({
+				type: e,
+				...h
+			});
+		},
+		getChartInfo: () => (y(), {
+			option: v.getOption(),
+			width: v.getWidth(),
+			height: v.getHeight(),
+			dom: v.getDom(),
+			imgURL: v.getDataURL()
+		}),
+		zrAction: (e, h) => {
+			y(), v.getZr().on(e, h);
+		},
+		action: (e, h) => {
+			y(), v.on(e, h);
+		},
+		cancelAction: (e) => {
+			y(), v.off(e);
+		}
 	};
 };
 export { MSCharts, isArray, isBigInt, isBoolean, isDate, isFunction, isMap, isNull, isNumber, isNumeric, isObject, isPromise, isRegExp, isSet, isString, isSymbol, isUndefined, numFixed, numToChUnit, numToSeparated, queryUrlParams, urlParams };
