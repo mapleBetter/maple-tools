@@ -11,7 +11,6 @@ export default defineConfig({
       insertTypesEntry: true, // 在 package.json 中自动插入类型声明入口
       outDir: './dist/types', // 指定输出目录为 types
       include: ['ts/**/*'], // 包含 ts 目录下的所有文件
-      exclude: ['**/*.test.ts', '**/*.spec.ts'], // 排除测试文件
       rollupTypes: true // 生成统一的类型声明文件
     })
   ],
