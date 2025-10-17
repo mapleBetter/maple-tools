@@ -1,18 +1,15 @@
 {
   "name": "maple-tools",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "type": "module",
-  "main": "dist/index.js",
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
       "require": "./dist/index.js"
-    },
-    "./secondary": {
-      "import": "./dist/secondary.js",
-      "require": "./dist/secondary.cjs"
     }
   },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
   "author": "maple",
   "scripts": {
     "dev": "vite",
