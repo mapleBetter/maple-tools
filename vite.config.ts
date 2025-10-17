@@ -6,16 +6,18 @@ import { resolve } from 'path';
 export default defineConfig({
   plugins: [react()],
   build: {
+    minify: false, // 关闭代码压缩
     lib: {
       // 库模式
       entry: resolve(__dirname, 'ts/index.ts'),
       name: 'mapleTools', // UMD 时使用的全局变量名
       fileName: (format) => {
-        if (format === 'umd') return `index.js`;
-        if (format === 'es') return `index.es.js`;
+        if (format === 'umd') return `index.umd.js`;
+        if (format === 'es') return `index.js`;
+        if (format === 'cjs') return `index.cjs`;
         return `index.${format}.js`;
       },
-      formats: ['es', 'umd', 'iife'], // 打包格式
+      formats: ['es', 'umd', 'cjs'], // 打包格式
     },
     rollupOptions: {
       external: ['echarts'], // 你不想打包进库的依赖

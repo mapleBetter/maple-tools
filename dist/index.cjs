@@ -1,4 +1,25 @@
-import * as echarts from "echarts";
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __copyProps = (to, from, except, desc) => {
+	if (from && typeof from === "object" || typeof from === "function") for (var keys = __getOwnPropNames(from), i = 0, n = keys.length, key; i < n; i++) {
+		key = keys[i];
+		if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+			get: ((k) => from[k]).bind(null, key),
+			enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+		});
+	}
+	return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", {
+	value: mod,
+	enumerable: true
+}) : target, mod));
+let echarts = require("echarts");
+echarts = __toESM(echarts);
 const queryUrlParams = (url) => {
 	try {
 		const params = new URLSearchParams(url ? new URL(url).search : window.location.search);
@@ -194,4 +215,25 @@ var MSCharts = (option, property) => {
 		cancelAction
 	};
 };
-export { MSCharts, isArray, isBigInt, isBoolean, isDate, isFunction, isMap, isNull, isNumber, isNumeric, isObject, isPromise, isRegExp, isSet, isString, isSymbol, isUndefined, numFixed, numToChUnit, numToSeparated, queryUrlParams, urlParams };
+exports.MSCharts = MSCharts;
+exports.isArray = isArray;
+exports.isBigInt = isBigInt;
+exports.isBoolean = isBoolean;
+exports.isDate = isDate;
+exports.isFunction = isFunction;
+exports.isMap = isMap;
+exports.isNull = isNull;
+exports.isNumber = isNumber;
+exports.isNumeric = isNumeric;
+exports.isObject = isObject;
+exports.isPromise = isPromise;
+exports.isRegExp = isRegExp;
+exports.isSet = isSet;
+exports.isString = isString;
+exports.isSymbol = isSymbol;
+exports.isUndefined = isUndefined;
+exports.numFixed = numFixed;
+exports.numToChUnit = numToChUnit;
+exports.numToSeparated = numToSeparated;
+exports.queryUrlParams = queryUrlParams;
+exports.urlParams = urlParams;
